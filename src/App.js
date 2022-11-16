@@ -1,9 +1,7 @@
-import logo from "./logo.svg";
 import "./App.css";
 
-import styles from "../styles/Home.module.css";
-import { Button, message, Upload, Form, Input, Checkbox } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+// import { Button, message, Upload, Form, Input, Checkbox } from "antd";
+// import { UploadOutlined } from "@ant-design/icons";
 
 const mainUrl = "https://54.165.164.131";
 
@@ -15,12 +13,12 @@ function App() {
   const onSubmit = () => {};
 
   return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <h1 className={styles.mainTitle}>Market basket analysis</h1>
+    <div>
+      <div>
+        <h1>Market basket analysis</h1>
 
-        <div className={styles.uploads}>
-          <Form
+        <div>
+          {/* <Form
             name="basic"
             labelCol={{
               span: 8,
@@ -53,7 +51,7 @@ function App() {
                 Submit
               </Button>
             </Form.Item>
-          </Form>
+          </Form> */}
         </div>
       </div>
     </div>
