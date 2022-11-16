@@ -25,17 +25,13 @@ function App() {
       <form onSubmit={submitHandler} className="form">
         <h2
           style={{
-            margin: "0 0 20px",
+            margin: "0 0 50px",
             textAlign: "center",
           }}
         >
           Submit a csv file
         </h2>
-        <div
-          style={{
-            padding: "10px",
-          }}
-        >
+        <div>
           <input
             onChange={(e) => fileHandler(e)}
             type="file"
