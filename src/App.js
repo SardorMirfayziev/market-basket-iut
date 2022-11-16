@@ -1,21 +1,60 @@
+import { useState } from "react";
 import "./App.css";
 
 const mainUrl = "https://54.165.164.131";
 
 function App() {
-  const handleChangeFile = (file) => {
-    console.log(file);
+  const [file, setFile] = useState();
+  const fileHandler = ({ target }) => {
+    console.log(target.files[0]);
+    setFile(target.files[0]);
   };
 
-  const onSubmit = () => {};
+  const submitHandler = () => {};
 
   return (
-    <div>
-      <div>
-        <h1>Market basket analysis</h1>
+    <div className="wrapper">
+      <h1
+        style={{
+          marginBottom: "40px",
+        }}
+      >
+        Market basket analysis
+      </h1>
 
-        <div></div>
-      </div>
+      <form onSubmit={submitHandler} className="form">
+        <h2
+          style={{
+            margin: "0 0 20px",
+            textAlign: "center",
+          }}
+        >
+          Submit a csv file
+        </h2>
+        <div
+          style={{
+            padding: "10px",
+          }}
+        >
+          <input
+            onChange={(e) => fileHandler(e)}
+            type="file"
+            id="file"
+            hidden
+          />
+          <label htmlFor="file" className="file-upload">
+            Choose a file
+          </label>
+        </div>
+
+        <div className="uploaded-file">
+          {file && <span>File uploaded: {file.name}</span>}
+        </div>
+
+        <div className="submit-btn">
+          <button type="button">Submit</button>
+        </div>
+      </form>
     </div>
   );
 }
