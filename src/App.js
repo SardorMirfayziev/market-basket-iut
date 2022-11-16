@@ -1,8 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
 
-import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { Button, message, Upload, Form, Input, Checkbox } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
