@@ -1,124 +1,126 @@
+/* 
+    importing used packages from node modules 
+*/
+
+//importing usestate from react in order to save local state
 import { useState } from "react";
+
+// importing css files
 import "./App.css";
+import Loading from "./loading";
 
-const mainUrl = "https://54.165.164.131";
+const mainUrl = "http://127.0.0.1:5000/upload";
 
+// main app function renders the whole page
 function App() {
+  // usestate function returns the current state and set state function to change the value of the state with rendering
   const [file, setFile] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [allItems, setAllItems] = useState([]);
+  // file handler function to set the uploaded file to local state
   const fileHandler = ({ target }) => {
     console.log(target.files[0]);
     setFile(target.files[0]);
   };
 
-  const submitHandler = () => {};
+  // after the user submits the form this function sends request to backend
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    // fetch is an api for sending asyncrounous http requests
+    const res = await fetch(mainUrl, {
+      method: "post",
+      body: formData,
+    });
+
+    const data = await res.json();
+    setIsLoading(false);
+    setAllItems(data);
+  };
 
   return (
-    <div className="wrapper">
-      <h1
-        style={{
-          marginBottom: "40px",
-        }}
-      >
-        Market basket analysis
-      </h1>
-
-      <form onSubmit={submitHandler} className="form">
-        <h2
-          style={{
-            margin: "0 0 50px",
-            textAlign: "center",
-          }}
-        >
-          Submit a csv file
-        </h2>
-        <div>
-          <input
-            onChange={(e) => fileHandler(e)}
-            type="file"
-            id="file"
-            hidden
-          />
-          <label htmlFor="file" className="file-upload">
-            Choose a file
-          </label>
-        </div>
-
-        <div className="uploaded-file">
-          {file && <span>File uploaded: {file.name}</span>}
-        </div>
-
-        <div className="submit-btn">
-          <button type="button">Submit</button>
-        </div>
-      </form>
-
-      <div
-        style={{
-          padding: "20px",
-          border: "1px solid gold",
-          marginTop: "40px",
-        }}
-      >
-        <h2>Most Frequent tuples</h2>
-        {mock.map(([it1, it2], index) => (
-          <div
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="wrapper">
+          <h1
             style={{
-              display: "flex",
-              marginBottom: "10px",
+              marginBottom: "40px",
             }}
           >
-            <p
+            Market basket analysis
+          </h1>
+
+          <form onSubmit={submitHandler} className="form">
+            <h2
               style={{
-                margin: "0 10px 0 0",
+                margin: "0 0 50px",
+                textAlign: "center",
               }}
             >
-              {index})
-            </p>
-            <span>
-              {it1}, {it2}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
+              Submit a csv file
+            </h2>
+            <div>
+              <input
+                onChange={(e) => fileHandler(e)}
+                type="file"
+                id="file"
+                hidden
+              />
+              <label htmlFor="file" className="file-upload">
+                Choose a file
+              </label>
+            </div>
+
+            <div className="uploaded-file">
+              {file && <span>File uploaded: {file.name}</span>}
+            </div>
+
+            <div className="submit-btn">
+              <button>Submit</button>
+            </div>
+          </form>
+
+          {allItems.length !== 0 && (
+            <div
+              style={{
+                padding: "20px",
+                border: "1px solid gold",
+                marginTop: "40px",
+              }}
+            >
+              <h2>Most Frequent tuples</h2>
+              {
+                // mapping the resulted array and displaying to the screen
+                allItems?.map(([it1, it2], index) => (
+                  <div
+                    style={{
+                      display: "flex",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <p
+                      style={{
+                        margin: "0 10px 0 0",
+                      }}
+                    >
+                      {index})
+                    </p>
+                    <span>
+                      {it1}, {it2}
+                    </span>
+                  </div>
+                ))
+              }
+            </div>
+          )}
+        </div>
+      )}
+    </>
   );
 }
-
-const mock = [
-  ["whole milk", "tropical fruit"],
-  ["white bread", "ham"],
-  ["other vegetables", "tropical fruit"],
-  ["sugar", "flour"],
-  ["red/blush wine", "bottled beer"],
-  ["citrus fruit", "tropical fruit"],
-  ["tropical fruit", "whole milk"],
-  ["whipped/sour cream", "whole milk"],
-  ["processed cheese", "white bread"],
-  ["herbs", "whole milk"],
-  ["other vegetables", "herbs"],
-  ["other vegetables", "butter"],
-  ["whole milk", "curd"],
-  ["whole milk", "pip fruit"],
-  ["other vegetables", "pip fruit"],
-  ["bottled beer", "liquor"],
-  ["other vegetables", "pip fruit"],
-  ["tropical fruit", "other vegetables"],
-  ["yogurt", "whole milk"],
-  ["other vegetables", "pip fruit"],
-  ["other vegetables", "whole milk"],
-  ["other vegetables", "tropical fruit"],
-  ["whole milk", "butter"],
-  ["whole milk", "pip fruit"],
-  ["Instant food products", "hamburger meat"],
-  ["whole milk", "butter"],
-  ["citrus fruit", "whole milk"],
-  ["long life bakery product", "chocolate"],
-  ["long life bakery product", "chocolate"],
-  ["other vegetables", "butter"],
-  ["root vegetables", "butter"],
-  ["sausage", "root vegetables"],
-  ["citrus fruit", "pip fruit"],
-  ["other vegetables", "whole milk"],
-];
 
 export default App;
